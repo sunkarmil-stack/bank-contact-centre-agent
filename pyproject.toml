@@ -1,0 +1,17 @@
+[project]
+name = "cibc-contact-centre-agent"
+version = "1.0.0"
+description = "Agentic AI for a bank contact centre - LangGraph multi-agent orchestrator with MCP tools, RAG, HITL, governance. Synthetic data only."
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "S", "UP"]
+ignore = ["S101", "S105", "S106", "B008"]
+
+[tool.bandit]
+exclude_dirs = ["tests"]

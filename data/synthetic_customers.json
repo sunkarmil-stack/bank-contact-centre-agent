@@ -1,0 +1,59 @@
+{
+  "_notice": "SYNTHETIC TEST DATA ONLY. Fictional people, accounts and merchants. Contains no real customer data.",
+  "customers": [
+    {
+      "customer_ref": "SYN-C-1001",
+      "display_name": "Alex Sample",
+      "segment": "personal",
+      "preferred_language": "en",
+      "vulnerability_flags": [],
+      "accounts": [
+        {"account_id": "SYN-A-1001-01", "type": "chequing", "nickname": "Everyday Chequing", "balance_cad": 2450.18, "status": "active"},
+        {"account_id": "SYN-A-1001-02", "type": "savings", "nickname": "High Interest Savings", "balance_cad": 10230.55, "status": "active"}
+      ],
+      "cards": [
+        {"card_id": "SYN-K-1001-01", "product": "Sample Rewards Visa", "last4": "0001", "status": "active"}
+      ],
+      "transactions": [
+        {"txn_id": "SYN-T-9001", "account_id": "SYN-A-1001-01", "date": "2026-10-20", "merchant": "Maple Grocer (fictional)", "amount_cad": -86.42, "card_id": "SYN-K-1001-01"},
+        {"txn_id": "SYN-T-9002", "account_id": "SYN-A-1001-01", "date": "2026-10-21", "merchant": "Northern Streamz (fictional)", "amount_cad": -19.99, "card_id": "SYN-K-1001-01"},
+        {"txn_id": "SYN-T-9003", "account_id": "SYN-A-1001-01", "date": "2026-10-22", "merchant": "Unknown Online Electronics (fictional)", "amount_cad": -749.00, "card_id": "SYN-K-1001-01"},
+        {"txn_id": "SYN-T-9004", "account_id": "SYN-A-1001-01", "date": "2026-10-23", "merchant": "Payroll Deposit (fictional)", "amount_cad": 2100.00, "card_id": null}
+      ]
+    },
+    {
+      "customer_ref": "SYN-C-1002",
+      "display_name": "Jordan Example",
+      "segment": "personal",
+      "preferred_language": "fr",
+      "vulnerability_flags": ["recent_bereavement"],
+      "accounts": [
+        {"account_id": "SYN-A-1002-01", "type": "chequing", "nickname": "Compte-chèques", "balance_cad": 640.00, "status": "active"}
+      ],
+      "cards": [
+        {"card_id": "SYN-K-1002-01", "product": "Sample Cash Back Mastercard", "last4": "0002", "status": "active"}
+      ],
+      "transactions": [
+        {"txn_id": "SYN-T-9101", "account_id": "SYN-A-1002-01", "date": "2026-10-19", "merchant": "Cafe Fictif", "amount_cad": -6.75, "card_id": "SYN-K-1002-01"},
+        {"txn_id": "SYN-T-9102", "account_id": "SYN-A-1002-01", "date": "2026-10-22", "merchant": "Gym Membership (fictional)", "amount_cad": -45.00, "card_id": "SYN-K-1002-01"}
+      ]
+    },
+    {
+      "customer_ref": "SYN-C-1003",
+      "display_name": "Sam Placeholder",
+      "segment": "small_business",
+      "preferred_language": "en",
+      "vulnerability_flags": [],
+      "accounts": [
+        {"account_id": "SYN-A-1003-01", "type": "business_operating", "nickname": "Operating Account", "balance_cad": 48210.90, "status": "active"}
+      ],
+      "cards": [
+        {"card_id": "SYN-K-1003-01", "product": "Sample Business Visa", "last4": "0003", "status": "active"}
+      ],
+      "transactions": [
+        {"txn_id": "SYN-T-9201", "account_id": "SYN-A-1003-01", "date": "2026-10-18", "merchant": "Office Supplies Co (fictional)", "amount_cad": -312.40, "card_id": "SYN-K-1003-01"},
+        {"txn_id": "SYN-T-9202", "account_id": "SYN-A-1003-01", "date": "2026-10-21", "merchant": "Cloud Hosting Ltd (fictional)", "amount_cad": -1299.00, "card_id": "SYN-K-1003-01"}
+      ]
+    }
+  ]
+}

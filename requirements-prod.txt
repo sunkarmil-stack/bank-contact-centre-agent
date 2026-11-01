@@ -1,0 +1,6 @@
+-r requirements.txt
+# Production persistence (PostgreSQL checkpointer + long-term store)
+langgraph-checkpoint-postgres>=3.0,<4
+psycopg[binary,pool]>=3.2
+# Model-graded evaluation in Microsoft Foundry
+azure-ai-evaluation>=1.0

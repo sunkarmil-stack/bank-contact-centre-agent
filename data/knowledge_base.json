@@ -1,0 +1,77 @@
+{
+  "_notice": "SYNTHETIC SAMPLE KNOWLEDGE BASE. Written for this demo. NOT actual CIBC policy, fees or procedures.",
+  "documents": [
+    {
+      "doc_id": "KB-CARD-001",
+      "title": "Lost or stolen credit card",
+      "owner": "Card Services Operations",
+      "effective_date": "2026-01-15",
+      "classification": "internal",
+      "audience": ["agent", "customer"],
+      "content": "If a client reports a lost or stolen credit card, verify the client's identity before taking any action on the card. A verified client can have the card temporarily locked immediately to prevent new purchases. A replacement card is normally mailed within 5 to 7 business days to the address on file. Ask the client to review recent transactions; any transaction the client does not recognise should be handled through the dispute process. Card locks requested by an assistant require review by an authorised servicing reviewer before they are applied."
+    },
+    {
+      "doc_id": "KB-DISP-002",
+      "title": "Disputing a credit card transaction",
+      "owner": "Card Disputes",
+      "effective_date": "2026-02-01",
+      "classification": "internal",
+      "audience": ["agent", "customer"],
+      "content": "A client may dispute a credit card transaction they do not recognise or that was not delivered as agreed. The client should first try to resolve the issue with the merchant when it is safe to do so. To open a dispute, record the transaction identifier, the amount and the reason. Disputes are usually reviewed within 30 to 90 days depending on card network rules. A temporary credit may be applied while the dispute is investigated, but outcomes are not guaranteed. Disputes above the review threshold require approval from an authorised reviewer before submission."
+    },
+    {
+      "doc_id": "KB-FEES-003",
+      "title": "Everyday chequing account monthly fee overview",
+      "owner": "Personal Banking Products",
+      "effective_date": "2026-03-01",
+      "classification": "public",
+      "audience": ["agent", "customer"],
+      "content": "The sample everyday chequing account has a monthly fee that can be waived when the client keeps the minimum balance required by the plan for the whole month. Transactions above the plan limit are charged per transaction. Clients can review their plan, fee waiver conditions and the current fee schedule in online banking or the fee guide. Agents must refer clients to the current published fee guide rather than quoting fees from memory."
+    },
+    {
+      "doc_id": "KB-CMPL-004",
+      "title": "Complaint handling procedure",
+      "owner": "Client Care / Complaints",
+      "effective_date": "2026-01-01",
+      "classification": "internal",
+      "audience": ["agent"],
+      "content": "Every expression of dissatisfaction must be recorded as a complaint, even if resolved on first contact. Acknowledge the complaint, record it in the case management system with a reference number, and tell the client the expected timeline. If the complaint cannot be resolved at first contact it is escalated to the complaints team. Clients must be informed of the escalation path, including the internal ombudsman and the external complaints body, if they are not satisfied with the final response. Complaint records are retained according to the records retention schedule."
+    },
+    {
+      "doc_id": "KB-FRAUD-005",
+      "title": "Suspected fraud and scams",
+      "owner": "Fraud Prevention",
+      "effective_date": "2026-02-15",
+      "classification": "internal",
+      "audience": ["agent"],
+      "content": "If a client reports a suspected scam, account takeover, or that someone else has access to their online banking, transfer the client to the fraud team immediately using a priority warm transfer. Do not attempt to investigate fraud in the assistant. Remind the client that the bank will never ask for their password, one-time passcode or full card number by email or text. Lock affected cards only after identity verification and reviewer approval."
+    },
+    {
+      "doc_id": "KB-TRVL-006",
+      "title": "Using your card while travelling",
+      "owner": "Card Services Operations",
+      "effective_date": "2025-11-01",
+      "classification": "public",
+      "audience": ["agent", "customer"],
+      "content": "Clients do not need to set a travel notice for most card products. Clients should make sure their contact information is current so the bank can reach them about unusual activity. Foreign currency transactions may include a conversion fee as described in the cardholder agreement."
+    },
+    {
+      "doc_id": "KB-ETRF-007",
+      "title": "Interac e-Transfer limits and issues",
+      "owner": "Digital Banking",
+      "effective_date": "2026-04-01",
+      "classification": "public",
+      "audience": ["agent", "customer"],
+      "content": "Interac e-Transfer sending limits depend on the client's account and are shown in online banking. If a transfer is pending, the recipient may not have deposited it yet; the sender can cancel an unclaimed transfer. If a client believes an e-Transfer was sent because of a scam, treat it as suspected fraud and transfer to the fraud team."
+    },
+    {
+      "doc_id": "KB-VULN-008",
+      "title": "Supporting clients in vulnerable circumstances",
+      "owner": "Client Experience",
+      "effective_date": "2026-01-20",
+      "classification": "internal",
+      "audience": ["agent"],
+      "content": "Clients may be in vulnerable circumstances such as bereavement, serious illness, financial hardship or cognitive decline. Listen carefully, show empathy and offer a transfer to a specialist team. Never pressure the client. With consent, note accommodation needs on the client profile so future interactions are adapted."
+    }
+  ]
+}

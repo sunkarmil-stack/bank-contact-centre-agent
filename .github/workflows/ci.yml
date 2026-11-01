@@ -1,0 +1,49 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install
+        run: pip install -r requirements.txt ruff bandit pip-audit
+      - name: Lint
+        run: ruff check ccagent
+      - name: SAST (bandit)
+        run: bandit -q -r ccagent -ll
+      - name: Dependency vulnerabilities
+        run: pip-audit -r requirements.txt --strict || true   # set to blocking once the baseline is clean
+      - name: Unit + integration tests
+        run: pytest -q
+      - name: Evaluation release gate
+        run: python -m evals.run_eval
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: evals/reports/
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+
+  container:
+    needs: build-test-evaluate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t ccagent:${{ github.sha }} .
+      - uses: aquasecurity/trivy-action@0.24.0
+        with: { image-ref: "ccagent:${{ github.sha }}", severity: "CRITICAL,HIGH", exit-code: "1" }

@@ -1,0 +1,111 @@
+# Local "production-shaped" stack — the same five services as `python -m scripts.run_all`,
+# plus PostgreSQL, an OpenTelemetry collector and Arize Phoenix (renders OpenInference traces).
+#
+#   docker compose up --build
+#   Demo console (through the gateway):  http://localhost:8000/console
+#   Gateway health:                      http://localhost:8000/gateway/health
+#   Traces:                              http://localhost:6006
+#
+# Only the gateway publishes a port. The agent API, MCP tool service and microservices are
+# reachable only on the internal network (the Azure equivalent: private endpoints in a VNet).
+
+x-shared: &shared
+  # DEV-ONLY keys so services trust each other. In Azure these are not shared secrets:
+  # workloads use managed identities (CCAGENT_SERVICE_AUTH=azure) and keys live in Key Vault.
+  CCAGENT_ENV: local
+  CCAGENT_SERVICE_AUTH: local
+  CCAGENT_SECRET_DELEGATION_SIGNING_KEY: dev-only-delegation-key-change-me-0123456789
+  CCAGENT_SECRET_APPROVAL_SIGNING_KEY: dev-only-approval-key-change-me-0123456789
+  CCAGENT_SECRET_JWT_SIGNING_KEY: dev-only-jwt-key-change-me-0123456789abcdef
+  CCAGENT_SECRET_SERVICE_SIGNING_KEY: dev-only-service-key-change-me-0123456789ab
+  CCAGENT_SECRET_CHECKPOINT_ENCRYPTION_KEY: ZGV2LW9ubHktY2hlY2twb2ludC1rZXktMzJieXRlcyE=
+  CCAGENT_PERSISTENCE: postgres
+  CCAGENT_SECRET_POSTGRES_DSN: postgresql://ccagent:ccagent@postgres:5432/ccagent
+
+x-health: &health
+  interval: 5s
+  timeout: 3s
+  retries: 20
+
+services:
+  gateway:
+    build: .
+    command: ["uvicorn", "services.gateway.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+    ports: ["8000:8000"]
+    environment:
+      <<: *shared
+      GATEWAY_UPSTREAM_AGENT_API: http://api:8080
+      GATEWAY_HEALTH_MCP: http://mcp:8765
+      GATEWAY_HEALTH_CUSTOMER: http://customer:8101
+      GATEWAY_HEALTH_CASE: http://case:8102
+    depends_on:
+      api: { condition: service_healthy }
+
+  api:
+    build: .
+    environment:
+      <<: *shared
+      CCAGENT_MCP_MODE: http
+      CCAGENT_MCP_URL: http://mcp:8765/mcp
+      CCAGENT_CASE_SERVICE: http
+      CASE_API_BASE_URL: http://case:8102
+      CCAGENT_REQUIRE_GATEWAY: "true"
+      CCAGENT_OTEL_EXPORTER: otlp
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+    healthcheck: { <<: *health, test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/healthz')"] }
+    depends_on:
+      mcp: { condition: service_healthy }
+      otel-collector: { condition: service_started }
+
+  mcp:
+    build: .
+    command: ["python", "-m", "ccagent.mcp_server"]
+    environment:
+      <<: *shared
+      MCP_HOST: 0.0.0.0
+      CCAGENT_CUSTOMER_SERVICE: http
+      CUSTOMER_API_BASE_URL: http://customer:8101
+      CCAGENT_CASE_SERVICE: http
+      CASE_API_BASE_URL: http://case:8102
+    healthcheck: { <<: *health, test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8765/healthz')"] }
+    depends_on:
+      customer: { condition: service_healthy }
+      case: { condition: service_healthy }
+
+  customer:
+    build: .
+    command: ["uvicorn", "services.customer_service.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8101"]
+    environment: *shared
+    healthcheck: { <<: *health, test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8101/healthz')"] }
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  case:
+    build: .
+    command: ["uvicorn", "services.case_service.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8102"]
+    environment: *shared
+    healthcheck: { <<: *health, test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8102/healthz')"] }
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ccagent
+      POSTGRES_PASSWORD: ccagent
+      POSTGRES_DB: ccagent
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { <<: *health, test: ["CMD-SHELL", "pg_isready -U ccagent"] }
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes: ["./deploy/otel-collector.yaml:/etc/otelcol/config.yaml:ro"]
+    depends_on: [phoenix]
+
+  phoenix:
+    image: arizephoenix/phoenix:version-5.5.2
+    ports: ["6006:6006"]
+
+volumes:
+  pgdata:
