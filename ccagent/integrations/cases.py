@@ -63,7 +63,7 @@ class LocalCaseService:
         existing = self._db.query_one("SELECT * FROM cases WHERE idempotency_key=?", (idempotency_key,))
         if existing:
             return {**existing, "idempotent_replay": True}
-        now = dt.datetime.now(dt.timezone.utc)
+        now = dt.datetime.now(dt.UTC)
         case = {
             "case_id": f"CASE-{now:%y%m%d}-{_ref_code()}",
             "idempotency_key": idempotency_key,
@@ -78,9 +78,9 @@ class LocalCaseService:
             "created_by": actor,
             "run_id": run_id,
         }
-        self._db.execute(
-            f"INSERT INTO cases ({', '.join(case)}) VALUES ({', '.join('?' for _ in case)})", tuple(case.values())
-        )
+        # Column names come from the literal dict above; values are bound parameters.
+        cols, marks = ", ".join(case), ", ".join("?" for _ in case)
+        self._db.execute(f"INSERT INTO cases ({cols}) VALUES ({marks})", tuple(case.values()))  # noqa: S608  # nosec B608
         self._audit.append("case_created", actor, run_id, case_id=case["case_id"], case_type=case_type,
                            priority=priority, sla_due_at=case["sla_due_at"])
         return {**case, "idempotent_replay": False}

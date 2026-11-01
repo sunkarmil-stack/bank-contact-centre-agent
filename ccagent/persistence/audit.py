@@ -38,7 +38,9 @@ CREATE TABLE IF NOT EXISTS audit_log (
 _GENESIS = "0" * 64
 
 
-def _digest(prev_hash: str, event_id: str, ts: float, event_type: str, actor: str, run_id: str | None, details: str) -> str:
+def _digest(
+    prev_hash: str, event_id: str, ts: float, event_type: str, actor: str, run_id: str | None, details: str
+) -> str:
     payload = json.dumps([prev_hash, event_id, round(ts, 6), event_type, actor, run_id, details], separators=(",", ":"))
     return hashlib.sha256(payload.encode()).hexdigest()
 

@@ -57,7 +57,8 @@ def open_database(settings: Settings, secrets, path: str | None = None) -> Datab
 def open_audit(settings: Settings, secrets, service: str, default_db: Database) -> AuditLog:
     """One shared, hash-chained audit store for every service (the same PostgreSQL in prod,
     a shared WAL-mode SQLite file locally) so a run's trail is complete end to end."""
-    if settings.persistence == "postgres" or not settings.audit_db_path or settings.audit_db_path == settings.sqlite_path:
+    if (settings.persistence == "postgres" or not settings.audit_db_path
+            or settings.audit_db_path == settings.sqlite_path):
         return AuditLog(default_db, service=service)
     return AuditLog(Database(settings.audit_db_path), service=service)
 

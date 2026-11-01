@@ -70,7 +70,7 @@ async def invoke_structured(
     for attempt in range(1, max_attempts + 1):
         started = time.perf_counter()
         with span(f"llm.{name}", SpanKind.LLM, **{"llm.attempt": attempt, "llm.schema": schema.__name__}):
-            msg = await call_with_resilience(lambda: model.ainvoke(convo), timeout_s=timeout_s, max_retries=1)
+            msg = await call_with_resilience(lambda c=convo: model.ainvoke(c), timeout_s=timeout_s, max_retries=1)
         METRICS.observe(f"llm_latency_s.{name}", time.perf_counter() - started)
         raw = msg.content if isinstance(msg.content, str) else json.dumps(msg.content)
         try:

@@ -21,20 +21,28 @@ from langchain_core.messages import AIMessage, BaseMessage
 from langchain_core.outputs import ChatGeneration, ChatResult
 
 _INTENT_RULES: list[tuple[str, list[tuple[str, float]]]] = [
-    ("fraud_report", [(r"\bscam|scammed|fraud|hacked|someone (else )?(has|got) (access|into)|phish|account takeover", 1.0),
+    ("fraud_report", [(r"\bscam|scammed|fraud|hacked|someone (else )?(has|got) (access|into)|"
+                       r"phish|account takeover", 1.0),
                       (r"didn'?t (make|authori[sz]e)|unauthori[sz]ed", 0.5)]),
-    ("card_lost_stolen", [(r"\b(lost|stolen|misplaced|can'?t find)\b.*\bcard\b|\bcard\b.*\b(lost|stolen|missing)\b", 1.0),
+    ("card_lost_stolen", [(r"\b(lost|stolen|misplaced|can'?t find)\b.*\bcard\b|"
+                           r"\bcard\b.*\b(lost|stolen|missing)\b", 1.0),
                           (r"\b(lock|freeze|block)\b.*\bcard\b", 0.8)]),
-    ("transaction_dispute", [(r"\bdispute|don'?t recogni[sz]e|charged twice|double charged|never (received|arrived)|refund\b", 1.0),
+    ("transaction_dispute", [(r"\bdispute|don'?t recogni[sz]e|charged twice|double charged|"
+                              r"never (received|arrived)|refund\b", 1.0),
                              (r"\bcharge\b|\btransaction\b", 0.3)]),
     ("complaint", [(r"\bcomplain|complaint|unacceptable|terrible service|worst|file a grievance|ombuds", 1.0),
                    (r"\bfrustrat|angry|upset|disappointed\b", 0.4)]),
-    ("human_agent_request", [(r"\b(speak|talk) (to|with) (a |an )?(human|person|agent|representative|someone)|\breal person\b", 1.0)]),
-    ("account_inquiry", [(r"\bbalance|recent transactions|last (few )?transactions|statement|how much (money|do i have)", 1.0)]),
-    ("product_question", [(r"\bfee|fees|monthly|travel|abroad|e-?transfer|interac|limit|waive|how (do|does|can)|what is", 0.7)]),
+    ("human_agent_request", [(r"\b(speak|talk) (to|with) (a |an )?(human|person|agent|representative|someone)|"
+                              r"\breal person\b", 1.0)]),
+    ("account_inquiry", [(r"\bbalance|recent transactions|last (few )?transactions|statement|"
+                          r"how much (money|do i have)", 1.0)]),
+    ("product_question", [(r"\bfee|fees|monthly|travel|abroad|e-?transfer|interac|limit|waive|"
+                           r"how (do|does|can)|what is", 0.7)]),
 ]
 
-_NEG = re.compile(r"\b(angry|furious|terrible|unacceptable|ridiculous|worst|frustrat\w*|upset|disgusted|fed up)\b", re.I)
+_NEG = re.compile(
+    r"\b(angry|furious|terrible|unacceptable|ridiculous|worst|frustrat\w*|upset|disgusted|fed up)\b", re.I
+)
 _POS = re.compile(r"\b(thanks|thank you|great|appreciate|perfect)\b", re.I)
 _VULN = re.compile(r"\b(passed away|bereave\w*|died|funeral|hospital|terminal|lost my job|can'?t afford|"
                    r"financial hardship|confused|dementia)\b", re.I)
@@ -137,7 +145,8 @@ _SUMMARY_TOPIC = {
     "complaint": "raised a complaint", "fraud_report": "reported a suspected scam or fraud",
     "account_inquiry": "asked about their account balance and recent activity",
     "product_question": "asked a product or policy question", "human_agent_request": "asked to speak with a person",
-    "vulnerable_support": "shared difficult personal circumstances", "blocked": "sent a message blocked by the safety screen",
+    "vulnerable_support": "shared difficult personal circumstances",
+    "blocked": "sent a message blocked by the safety screen",
 }
 
 

@@ -202,7 +202,8 @@ def build_graph(deps: GraphDeps):
             if "step_up_required" in (prof.get("error"), txns.get("error")):
                 return {"step_up_required": True, "trace": ["account_agent"]}
             return {"escalation": {"reason": "data_unavailable", **state["route"]}, "trace": ["account_agent"]}
-        facts = [f"Your {a['nickname']} balance is ${a['balance_cad']:,.2f}" for a in prof["profile"].get("accounts", [])]
+        accounts = prof["profile"].get("accounts", [])
+        facts = [f"Your {a['nickname']} balance is ${a['balance_cad']:,.2f}" for a in accounts]
         facts += [f"Recent: {t['date']} {t['merchant']} ${abs(t['amount_cad']):,.2f}" for t in txns["transactions"]]
         return {"facts": facts, "account_data_disclosed": True, "resolved": True, "trace": ["account_agent"]}
 
@@ -477,7 +478,8 @@ def build_graph(deps: GraphDeps):
         final = {**state, "summary": summary}
         qa = score_interaction(final)
         ref = state.get("customer_ref")
-        if ref and runtime.store is not None and state.get("cust_auth_level", 0) >= 1 and state.get("intent") != "blocked":
+        authenticated = state.get("cust_auth_level", 0) >= 1
+        if ref and runtime.store is not None and authenticated and state.get("intent") != "blocked":
             await runtime.store.aput(
                 ("customers", ref, "interactions"), state["run_id"],
                 {"date": time.strftime("%Y-%m-%d"), "summary": summary, "intent": state.get("intent"),
