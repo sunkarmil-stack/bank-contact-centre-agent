@@ -18,16 +18,17 @@ import math
 import re
 from collections import Counter
 from pathlib import Path
+from typing import ClassVar
 
 from langchain_core.callbacks import AsyncCallbackManagerForRetrieverRun, CallbackManagerForRetrieverRun
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
-from typing import ClassVar
-
 from pydantic import ConfigDict, PrivateAttr
 
 _TOKEN = re.compile(r"[a-z0-9]+")
-_STOP = set("a an the and or of to for in on is are be by with your you my i it this that can do does how what when".split())
+_STOP = set(
+    "a an the and or of to for in on is are be by with your you my i it this that can do does how what when".split()
+)
 
 
 def _tokens(text: str) -> list[str]:
@@ -63,7 +64,7 @@ class LocalBM25Retriever(BaseRetriever):
         n = len(self._docs)
         k1, b = 1.5, 0.75
         out = []
-        for d, tf in zip(self._docs, self._tf):
+        for d, tf in zip(self._docs, self._tf, strict=True):
             if self.audience not in d.get("audience", []):
                 continue  # security trimming
             dl = sum(tf.values())

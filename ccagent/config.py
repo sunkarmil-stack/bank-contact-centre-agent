@@ -99,7 +99,7 @@ class Settings:
     allowed_origins: tuple[str, ...] = field(default_factory=tuple)
 
     @classmethod
-    def from_env(cls) -> "Settings":
+    def from_env(cls) -> Settings:
         data_dir = Path(_env("CCAGENT_DATA_DIR", "./.data"))  # type: ignore[arg-type]
         return cls(
             env=_env("CCAGENT_ENV", "local"),  # type: ignore[arg-type]

@@ -130,10 +130,12 @@ class MockCustomerService:
         self._db = db
         self._audit = audit
         db.execute(
-            "CREATE TABLE IF NOT EXISTS mock_card_status (card_id TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT)"
+            "CREATE TABLE IF NOT EXISTS mock_card_status "
+            "(card_id TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT)"
         )
         db.execute(
-            "CREATE TABLE IF NOT EXISTS idempotency (key TEXT PRIMARY KEY, operation TEXT NOT NULL, result TEXT NOT NULL)"
+            "CREATE TABLE IF NOT EXISTS idempotency "
+            "(key TEXT PRIMARY KEY, operation TEXT NOT NULL, result TEXT NOT NULL)"
         )
 
     def _customer(self, ref: str) -> dict:
@@ -197,7 +199,9 @@ class HttpCustomerService:
 
     name = "customer-service"
 
-    def __init__(self, base_url: str, service_tokens, timeout_s: float = 5.0, audience: str = "customer-service") -> None:
+    def __init__(
+        self, base_url: str, service_tokens, timeout_s: float = 5.0, audience: str = "customer-service"
+    ) -> None:
         import httpx
 
         self._tokens = service_tokens

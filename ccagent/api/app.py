@@ -60,7 +60,9 @@ class StaffingRequest(BaseModel):
 
 
 class DevTokenRequest(BaseModel):
-    persona: str = Field(pattern="^(ivr_authenticated|ivr_unauthenticated|agent|reviewer|reviewer2|supervisor|auditor)$")
+    persona: str = Field(
+        pattern="^(ivr_authenticated|ivr_unauthenticated|agent|reviewer|reviewer2|supervisor|auditor)$"
+    )
     customer_ref: str = "SYN-C-1001"
 
 
@@ -129,7 +131,8 @@ def create_app(settings: Settings | None = None, model=None) -> FastAPI:
                     request_entry.set("api-gateway")
                 except ServiceAuthError:
                     return JSONResponse({"error": "invalid_gateway_token"}, status_code=403)
-            if settings.require_gateway and request.url.path.startswith("/v1/") and request_entry.get() != "api-gateway":
+            if (settings.require_gateway and request.url.path.startswith("/v1/")
+                    and request_entry.get() != "api-gateway"):
                 return JSONResponse({"error": "gateway_required",
                                      "message": "This API is only reachable through the API gateway"}, status_code=403)
             response = await call_next(request)

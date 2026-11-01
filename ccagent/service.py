@@ -289,7 +289,8 @@ class ContactCentreService:
             raise ServiceError(403, "forbidden", "reviewer or supervisor role required")
         return [
             {"run_id": r.run_id, "interrupt_id": r.pending_interrupt, "action_hash": r.action_hash,
-             "display": (r.pending_action or {}).get("display"), "risk_reason": (r.pending_action or {}).get("risk_reason"),
+             "display": (r.pending_action or {}).get("display"),
+             "risk_reason": (r.pending_action or {}).get("risk_reason"),
              "requested_by": r.requested_by, "intent": r.intent, "waiting_s": round(time.time() - r.updated_at),
              "can_review": r.requested_by != principal.sub}
             for r in self.c.runs.list_by_status(RunStatus.AWAITING_REVIEW)

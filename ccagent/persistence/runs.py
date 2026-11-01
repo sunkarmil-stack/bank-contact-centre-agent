@@ -13,6 +13,7 @@ import json
 import time
 import uuid
 from dataclasses import dataclass
+from dataclasses import fields as dc_fields
 
 from .db import Database
 
@@ -77,11 +78,14 @@ class Run:
     updated_at: float
 
     @classmethod
-    def from_row(cls, row: dict) -> "Run":
+    def from_row(cls, row: dict) -> Run:
         row = dict(row)
         for k in ("pending_action", "result", "metrics"):
             row[k] = json.loads(row[k]) if row.get(k) else None
         return cls(**row)
+
+
+_RUN_COLUMNS = frozenset(f.name for f in dc_fields(Run)) - {"run_id", "version"}
 
 
 class RunRepository:
@@ -132,9 +136,12 @@ class RunRepository:
             if k in fields and fields[k] is not None and not isinstance(fields[k], str):
                 fields[k] = json.dumps(fields[k], default=str)
         fields["updated_at"] = time.time()
-        cols = ", ".join(f"{k}=?" for k in fields)
+        unknown = set(fields) - _RUN_COLUMNS
+        if unknown:
+            raise ValueError(f"unknown run columns: {sorted(unknown)}")
+        cols = ", ".join(f"{k}=?" for k in fields)  # names checked against the Run schema above
         n = self.db.execute(
-            f"UPDATE runs SET {cols}, version=version+1 WHERE run_id=? AND version=?",
+            f"UPDATE runs SET {cols}, version=version+1 WHERE run_id=? AND version=?",  # noqa: S608  # nosec B608
             (*fields.values(), run_id, expected_version),
         )
         if n != 1:

@@ -86,6 +86,6 @@ async def call_with_resilience(
                 breaker.record_failure()
             if attempt >= max_retries:
                 raise
-            delay = min(max_delay_s, base_delay_s * (2**attempt)) * (0.5 + random.random() / 2)
+            delay = min(max_delay_s, base_delay_s * (2**attempt)) * (0.5 + random.random() / 2)  # noqa: S311 - retry jitter, not crypto
             attempt += 1
             await asyncio.sleep(delay)

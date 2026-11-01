@@ -23,7 +23,7 @@ def compute_kpis(runs: RunRepository, cases: list[dict], since_hours: float = 24
     approved = sum(1 for r in reviewed if (r.metrics or {}).get("review_decision") == "approve")
     qa_scores = [(r.metrics or {}).get("qa_score") for r in items if (r.metrics or {}).get("qa_score") is not None]
     handle = [(r.metrics or {}).get("handle_time_s") for r in items if (r.metrics or {}).get("handle_time_s")]
-    now = dt.datetime.now(dt.timezone.utc).isoformat()
+    now = dt.datetime.now(dt.UTC).isoformat()
     open_complaints = [c for c in cases if c["case_type"] == "complaint" and c["status"] == "open"]
     breached = [c for c in open_complaints if c["sla_due_at"] < now]
 

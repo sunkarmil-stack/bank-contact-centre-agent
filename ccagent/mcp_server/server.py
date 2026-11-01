@@ -100,7 +100,8 @@ def build_mcp_server(svc: ToolServices) -> _Server:
             svc.audit.append("retrieval_injection_filtered", claims["sub"], None, dropped=dropped)
         return {"ok": True, "chunks": chunks, "filtered": dropped, "served_by": kb_backend}
 
-    @mcp.tool(name="get_customer_profile", description="Get the minimised profile of the customer bound to this session.")
+    @mcp.tool(name="get_customer_profile",
+              description="Get the minimised profile of the customer bound to this session.")
     async def get_customer_profile(delegation_token: str, run_id: str | None = None) -> dict:
         try:
             claims = verify(delegation_token, "get_customer_profile")
@@ -168,7 +169,8 @@ def build_mcp_server(svc: ToolServices) -> _Server:
         except TokenError as e:
             return _error("unauthorized", str(e))
         except CaseServiceError as e:
-            return _error(e.code if e.code in ("approval_required", "forbidden", "unauthorized") else "forbidden", str(e))
+            code = e.code if e.code in ("approval_required", "forbidden", "unauthorized") else "forbidden"
+            return _error(code, str(e))
         except ValueError as e:
             return _error("invalid_request", str(e))
 

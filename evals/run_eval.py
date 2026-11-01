@@ -168,7 +168,7 @@ async def main() -> int:
 
     reports = HERE / "reports"
     reports.mkdir(exist_ok=True)
-    (reports / "latest.json").write_text(json.dumps(metrics, indent=2))
+    (reports / "latest.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     lines = ["# Evaluation report", "", f"Model provider: `{settings.llm_provider}` · cases: {metrics['cases']}", "",
              "| Metric | Value | Threshold |", "|---|---|---|"]
     for k, v in th.items():
@@ -180,7 +180,7 @@ async def main() -> int:
     if metrics["failures"]:
         lines += ["## Failing cases", ""] + [f"- `{f['id']}` failed {f['failed']} (intent={f['intent']})"
                                               for f in metrics["failures"]]
-    (reports / "latest.md").write_text("\n".join(lines) + "\n")
+    (reports / "latest.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in metrics.items() if k != "failures"}, indent=2))
     if metrics["failures"]:
         print("FAILURES:", json.dumps(metrics["failures"], indent=2))

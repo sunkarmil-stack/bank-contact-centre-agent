@@ -1,0 +1,15 @@
+# Gitleaks config (picked up automatically by gitleaks-action from the repo root).
+# Keep the default ruleset; allow only the intentionally public DEV-ONLY keys used by
+# docker-compose.yml so services trust each other locally. Real keys live in Key Vault.
+title = "ccagent gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented dev-only placeholder keys (docker-compose local stack)"
+regexes = [
+  '''^dev-only-[a-z]+-key-change-me-[0-9a-f]+$''',
+  # base64 of "dev-only-checkpoint-key-32bytes!"
+  '''^ZGV2LW9ubHktY2hlY2twb2ludC1rZXktMzJieXRlcyE=$''',
+]
