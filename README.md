@@ -189,7 +189,15 @@ docs/            01–08: requirements, architecture + ADRs, integrations, secur
 * **Not run here:** `docker compose` (no Docker in the build environment) and the PostgreSQL code paths; the compose file and SQL dialect handling are written for them but should be smoke-tested on your machine.
 * **Written against SDK documentation but not executed here (needs Azure / services):** Azure OpenAI via Foundry, `azure-ai-projects` calls, Azure AI Search REST, Key Vault, Entra ID JWKS validation, Azure Monitor exporter, PostgreSQL saver/store, `azure-ai-evaluation`, LangSmith upload. Confirm API versions against the versions approved in your environment.
 * The offline model is deterministic and rule-based; a 100% offline eval score proves the *plumbing and controls*, not model quality. The same gate must be run against the real model before any release.
+
+
+## Service start
+
 ![Project Diagram](Screenshot-2026-11-01-193559.png)
+
+
+## System Interface
+
 ![Project Diagram](Screenshot-2026-11-01-194110.png)
 ![Project Diagram](Screenshot-2026-11-01-194154.png)
 ![Project Diagram](Screenshot-2026-11-01-194226.png)
