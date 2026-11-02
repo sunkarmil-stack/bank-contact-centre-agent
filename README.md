@@ -191,5 +191,5 @@ docs/            01–08: requirements, architecture + ADRs, integrations, secur
 * The offline model is deterministic and rule-based; a 100% offline eval score proves the *plumbing and controls*, not model quality. The same gate must be run against the real model before any release.
 
 
-![Project Diagram](Screenshot 2026-11-01 202555.png)
+![Project Diagram](Screenshot-2026-11-01-202555.png)
 
