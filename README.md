@@ -7,7 +7,7 @@ systems only through a governed **MCP** tool server, with **RAG**, guardrails,
 **OpenTelemetry/OpenInference** tracing, **LangSmith** and **Microsoft Foundry**
 integration, formal evaluation gates and full Solution Designer documentation.
 
-> **POC only.** Synthetic data, fictional customers and a synthetic knowledge
+> **Data used for demo only.** Synthetic data, fictional customers and a synthetic knowledge
 > base. Not affiliated with, endorsed by, or describing the actual systems or
 > policies of bank.
 
