@@ -190,6 +190,10 @@ docs/            01–08: requirements, architecture + ADRs, integrations, secur
 * **Written against SDK documentation but not executed here (needs Azure / services):** Azure OpenAI via Foundry, `azure-ai-projects` calls, Azure AI Search REST, Key Vault, Entra ID JWKS validation, Azure Monitor exporter, PostgreSQL saver/store, `azure-ai-evaluation`, LangSmith upload. Confirm API versions against the versions approved in your environment.
 * The offline model is deterministic and rule-based; a 100% offline eval score proves the *plumbing and controls*, not model quality. The same gate must be run against the real model before any release.
 
-
+![Project Diagram](Screenshot-2026-11-01-194154.png)
+![Project Diagram](Screenshot-2026-11-01-194226.png)
+![Project Diagram](Screenshot-2026-11-01-194249.png)
+![Project Diagram](Screenshot-2026-11-01-202517.png)
 ![Project Diagram](Screenshot-2026-11-01-202555.png)
+
 
